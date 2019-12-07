@@ -1,6 +1,5 @@
-import time
 import telebot
-import flask,request
+from flask import flask,request
 import os
 
 TOKEN = "966837741:AAERo0ws1miT9ISarbNtsJygHAPF3Z3PDhY"
