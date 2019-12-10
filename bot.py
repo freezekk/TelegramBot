@@ -6,7 +6,7 @@ TOKEN = "966837741:AAERo0ws1miT9ISarbNtsJygHAPF3Z3PDhY"
 bot = telebot.TeleBot(token=TOKEN)
 server= Flask(__name__)
 
-start_msg= "You can use /create for know who play \n /team for create equilibrated squads \n /teamrandom for create a random squads"
+help_msg= "You can use /create for know who play /team for create equilibrated squads /teamrandom for create a random squads"
 def findat(msg):
     # from a list of texts, it finds the one with the '@' sign
     for i in msg:
