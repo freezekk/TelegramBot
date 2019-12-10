@@ -6,6 +6,7 @@ TOKEN = "966837741:AAERo0ws1miT9ISarbNtsJygHAPF3Z3PDhY"
 bot = telebot.TeleBot(token=TOKEN)
 server= Flask(__name__)
 
+start_msg= "You can use /create for know who play \n /team for create equilibrated squads \n /teamrandom for create a random squads"
 def findat(msg):
     # from a list of texts, it finds the one with the '@' sign
     for i in msg:
@@ -14,7 +15,7 @@ def findat(msg):
 
 @bot.message_handler(commands=['start']) # welcome message handler
 def send_welcome(message):
-    bot.reply_to(message, '(placeholder text)')
+    bot.reply_to(message, start_msg)
 
 @bot.message_handler(commands=['help']) # help message handler
 def send_welcome(message):
