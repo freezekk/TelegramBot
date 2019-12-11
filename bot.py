@@ -15,7 +15,7 @@ def findat(msg):
 
 @bot.message_handler(commands=['start']) # welcome message handler
 def send_welcome(message):
-    bot.reply_to(message, 'matteo fagiano dell''anno')
+    bot.reply_to(message, "matteo fagiano dell'anno")
 
 @bot.message_handler(commands=['create']) # welcome message handler
 def send_welcome(message):
