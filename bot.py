@@ -1,4 +1,4 @@
-import telebot
+import telebot, random
 from flask import Flask,request
 import os
 
@@ -13,6 +13,8 @@ def findat(msg):
         if '@' in i:
             return i
 
+player=["JOHNFET", "21|SAVEGE","FREEZE","DORDE","LUIKZ","DOOMDAS","OLIVA","RIDA","PERUZ","GIORDY"]
+
 @bot.message_handler(commands=['start']) # welcome message handler
 def send_welcome(message):
     bot.reply_to(message, "matteo fagiano dell'anno")
@@ -26,8 +28,13 @@ def send_welcome(message):
     bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
 
 @bot.message_handler(commands=['randomteam']) # welcome message handler
-def send_welcome(message):
-    bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
+def send_welcome(message,player):
+    if(player.size()==0):
+        bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
+    else:
+        random.shuffle(player)
+        bot.reply_to(player)
+
 
 @bot.message_handler(commands=['help']) # help message handler
 def send_welcome(message):
