@@ -33,7 +33,7 @@ def send_welcome(message,player):
         bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
     else:
         random.shuffle(player)
-        bot.reply_to(player)
+        bot.reply_to(message,print(player))
 
 
 @bot.message_handler(commands=['help']) # help message handler
