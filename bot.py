@@ -15,11 +15,23 @@ def findat(msg):
 
 @bot.message_handler(commands=['start']) # welcome message handler
 def send_welcome(message):
-    bot.reply_to(message, start_msg)
+    bot.reply_to(message, 'matteo fagiano dell''anno')
+
+@bot.message_handler(commands=['create']) # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, 'questa funzione non e stata ancora implementata')
+
+@bot.message_handler(commands=['team']) # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
+
+@bot.message_handler(commands=['randomteam']) # welcome message handler
+def send_welcome(message):
+    bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
 
 @bot.message_handler(commands=['help']) # help message handler
 def send_welcome(message):
-    bot.reply_to(message, 'ALPHA = FEATURES MAY NOT WORK')
+    bot.reply_to(message, help_msg)
 
 @bot.message_handler(func=lambda msg: msg.text is not None and '@' in msg.text)
 # lambda function finds messages with the '@' sign in them
