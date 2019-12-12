@@ -4,16 +4,11 @@ import os
 
 TOKEN = "966837741:AAERo0ws1miT9ISarbNtsJygHAPF3Z3PDhY"
 bot = telebot.TeleBot(token=TOKEN)
-server= Flask(__name__)
+server = Flask(__name__)
 
 help_msg= "You can use /create for know who play /team for create equilibrated squads /teamrandom for create a random squads"
-def findat(msg):
-    # from a list of texts, it finds the one with the '@' sign
-    for i in msg:
-        if '@' in i:
-            return i
 
-player=["JOHNFET", "21|SAVEGE","FREEZE","DORDE","LUIKZ","DOOMDAS","OLIVA","RIDA","PERUZ","GIORDY"]
+players=["JOHNFET", "21|SAVEGE","FREEZE","DORDE","LUIKZ","DOOMDAS","OLIVA","RIDA","PERUZ","GIORDY"]
 
 @bot.message_handler(commands=['start']) # welcome message handler
 def send_welcome(message):
@@ -28,12 +23,13 @@ def send_welcome(message):
     bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
 
 @bot.message_handler(commands=['randomteam']) # welcome message handler
-def send_welcome(message,player):
-    if(player.size()==0):
+def send_welcome(message):
+    chat_id= message.chat.id
+    if(players.size()==0):
         bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
     else:
-        random.shuffle(player)
-        bot.reply_to(message,print(player))
+        random.shuffle(players)
+        bot.send_message(chat_id,'siamo in: '+players.size()+'e partecipano: '.join(players))
 
 
 @bot.message_handler(commands=['help']) # help message handler
