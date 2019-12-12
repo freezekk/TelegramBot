@@ -8,33 +8,39 @@ server = Flask(__name__)
 
 class Lobby:
     def __init__(self, max_size=10):
-        self.players = []
+        self.players = {}
         self.max_size = max_size
 
-    def add_player(self, player):
-        if len(self.players) < self.max_size and player not in self.players: 
-            self.players.add(player)
+    def add_player(self, player, chat):
+        if len(self.players) < self.max_size and player.id not in self.players:
+            self.players[player.id] = str(player.username or player.first_name)
             return True
         return False
 
     def remove_player(self, player):
-        if len(self.players) > 0 and player in self.players:
-            self.players.remove(player)
+        if len(self.players) > 0 and player.id in self.players:
+            del self.players[player.id]
             return True
         return False
 
+    def get_all_players(self):
+        return list(self.players.values())
+
+
     def get_random_players(self):
-        random.shuffle(self.players)
-        return self.players
+        result = list(self.players.values())
+        random.shuffle(result)
+        return result
 
     def get_lobby_size(self):
         return len(self.players)
 
-help_msg = ("You can use /create to create a lobby"
-            "/join to enter the lobby"
-            "/leave to leave the lobby"
-            "/team to create equilibrated squads"
-            "/teamrandom to create a random squads")
+
+help_msg = ("You can use /create to create a lobby \n"
+            "/join to enter the lobby \n"
+            "/leave to leave the lobby \n"
+            "/team to create equilibrated teams \n"
+            "/teamrandom to create a random teams")
 
 # TODO remove
 players_nostri = ["JOHNFET", "21|SAVEGE","FREEZE","DORDE","LUIKZ",
@@ -42,11 +48,18 @@ players_nostri = ["JOHNFET", "21|SAVEGE","FREEZE","DORDE","LUIKZ",
 
 lobby = None
 
+def print_team(players):
+    # TODO check vari
+    mid = len(players) // 2
+    s = ("TEAM 1: " + " ".join(players[:mid])
+        + "\nTEAM 2: " + " ".join(players[mid:]))
+    return s
+
 @bot.message_handler(commands=["start"]) # welcome message handler
 def start_bot(message):
     bot.reply_to(message, help_msg)
 
-@bot.message_handler(commands=["create"]) 
+@bot.message_handler(commands=["create"])
 def create_lobby(message):
     # TODO possibility to have different max sizes
     global lobby
@@ -59,7 +72,7 @@ def create_team(message):
     chat_id = message.chat.id
     if lobby is None:
         bot.reply_to(message, "You have to create a lobby using the command /create")
-    elif lobby.get_lobby_size < 2:
+    elif lobby.get_lobby_size() < 2:
         bot.reply_to(message, "Not enough members yet, use the command /join to enter the lobby")
     else:
         # TODO implementation
@@ -71,35 +84,36 @@ def create_random_team(message):
     chat_id = message.chat.id
     if lobby is None:
         bot.reply_to(message, "You have to create a lobby using the command /create")
-    elif lobby.get_lobby_size < 2:
+    elif lobby.get_lobby_size() < 2:
         bot.reply_to(message, "Not enough members yet, use the command /join to enter the lobby")
     else:
-        bot.send_message(chat_id, " ".join(lobby.get_random_players()))
+        bot.send_message(chat_id, print_team(lobby.get_random_players()))
 
 @bot.message_handler(commands=["join"]) # Add a player to the lobby
 def create_random_team(message):
     global lobby
     chat_id = message.chat.id
-    player = message.from_user.id
+    player = message.from_user
     if lobby is None:
         bot.reply_to(message, "You have to create a lobby using the command /create")
-    elif lobby.add_player(player):
-        bot.send_message(chat_id, "Joined correctly")
+    elif lobby.add_player(player, chat_id):
+        bot.send_message(chat_id, "Joined correctly as " + lobby.players[player.id])
+        #TODO max_size
+        bot.send_message(chat_id, "Lobby: " + str(lobby.get_lobby_size()) + "/10")
     else:
         bot.reply_to(message, "You can not join this lobby")
-        
+
 @bot.message_handler(commands=["leave"]) # Add a player to the lobby
 def create_random_team(message):
     global lobby
     chat_id = message.chat.id
-    player = message.from_user.id
+    player = message.from_user
     if lobby is None:
         bot.reply_to(message, "You have to create a lobby using the command /create")
-    elif lobby.remove_player(player) < 2:
+    elif lobby.remove_player(player):
         bot.send_message(chat_id, "Removed from the lobby correctly")
     else:
         bot.reply_to(message, "You can not leave this lobby")
-
 
 @bot.message_handler(commands=["help"]) # help message handler
 def send_help(message):
