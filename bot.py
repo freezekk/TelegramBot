@@ -25,7 +25,9 @@ def send_welcome(message):
 @bot.message_handler(commands=['randomteam']) # welcome message handler
 def send_welcome(message):
     chat_id= message.chat.id
+    bot.reply_to(message,str(chat_id))
     bot.reply_to(message, 'aaaaaa puoi generare un team senza prima aver creato una partita')
+    bot.reply_to(message,chat_id)
     if(players.size()==0):
         bot.reply_to(message, 'non puoi generare un team senza prima aver creato una partita')
     else:
