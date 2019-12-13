@@ -51,8 +51,8 @@ lobby = None
 def print_team(players):
     # TODO check vari
     mid = len(players) // 2
-    s = ("TEAM 1: " + " ".join(players[:mid])
-        + "\nTEAM 2: " + " ".join(players[mid:]))
+    s = ("TEAM 1:\n" + "\t".join(players[:mid])
+        + "\nTEAM 2:\n" + "\t".join(players[mid:]))
     return s
 
 @bot.message_handler(commands=["start"]) # welcome message handler
@@ -98,8 +98,9 @@ def create_random_team(message):
         bot.reply_to(message, "You have to create a lobby using the command /create")
     elif lobby.add_player(player, chat_id):
         bot.send_message(chat_id, "Joined correctly as " + lobby.players[player.id])
-        #TODO max_size
-        bot.send_message(chat_id, "Lobby: " + str(lobby.get_lobby_size()) + "/10")
+        bot.send_message(chat_id, "Lobby: "
+                        + str(lobby.get_lobby_size()) + "/"
+                        + str(lobby.max_size))
     else:
         bot.reply_to(message, "You can not join this lobby")
 
@@ -112,6 +113,9 @@ def create_random_team(message):
         bot.reply_to(message, "You have to create a lobby using the command /create")
     elif lobby.remove_player(player):
         bot.send_message(chat_id, "Removed from the lobby correctly")
+        bot.send_message(chat_id, "Lobby: "
+                        + str(lobby.get_lobby_size()) + "/"
+                        + str(lobby.max_size))
     else:
         bot.reply_to(message, "You can not leave this lobby")
 
