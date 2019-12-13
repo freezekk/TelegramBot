@@ -1,6 +1,5 @@
-import telebot, random
+import telebot, random, os
 from flask import Flask,request
-import os
 
 TOKEN = "966837741:AAERo0ws1miT9ISarbNtsJygHAPF3Z3PDhY"
 bot = telebot.TeleBot(token=TOKEN)
@@ -40,7 +39,7 @@ help_msg = ("You can use /create to create a lobby \n"
             "/join to enter the lobby \n"
             "/leave to leave the lobby \n"
             "/team to create equilibrated teams \n"
-            "/teamrandom to create a random teams")
+            "/randomteam to create a random teams")
 
 # TODO remove
 players_nostri = ["JOHNFET", "21|SAVEGE","FREEZE","DORDE","LUIKZ",
@@ -51,8 +50,8 @@ lobby = None
 def print_team(players):
     # TODO check vari
     mid = len(players) // 2
-    s = ("TEAM 1:\n" + "\t".join(players[:mid])
-        + "\nTEAM 2:\n" + "\t".join(players[mid:]))
+    s = ("TEAM 1:\n\t" + "\n\t".join(players[:mid])
+        + "\nTEAM 2:\n\t" + "\n\t".join(players[mid:]))
     return s
 
 @bot.message_handler(commands=["start"]) # welcome message handler
